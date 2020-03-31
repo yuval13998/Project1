@@ -10,6 +10,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
+    reviews = db.relationship("Review", backref="User", lazy=True)
+    likes = db.relationship("Like", backref="User", lazy=True)
 
 
 class Book(db.Model):
@@ -19,6 +21,18 @@ class Book(db.Model):
     author = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     reviews = db.relationship("Review", backref="Book", lazy=True)
+    likes = db.relationship("Like", backref="Book", lazy=True)
+
+    def addLike(self, user_id):
+        like = Like(user_id = user_id, book_isbn = self.isbn)
+        db.session.add(like)
+        db.session.commit()
+
+    def addRev(self, user_id, rate, content):
+        rev = Review(content=content,rate=rate,user_id=user_id,book_isbn=self.isbn)
+        db.session.add(rev)
+        db.session.commit()
+
 
 class Review(db.Model):
     __tablename__ = "reviews"

@@ -29,6 +29,7 @@
 #logout{
   margin-top: 60px;
   position: absolute;
+  font-family: Bangers;
 }
 /*-------------- copyright ----------------------------------*/
 .copyright{
@@ -50,6 +51,11 @@
   #brand::before{
     content: "M&YBooks";
   }
+
+  #signtoday::before{
+    content: "SIGN UP TODAY!";We'll never share your name with anyone else.
+  }
+
 }
 @media (max-width: 449px){
   #logout{
@@ -58,4 +64,28 @@
   #brand::before{
     content: "";
   }
+  #signtoday::before{
+    content: "SIGN UP!";
+  }
+}
+
+/*-----------------------------register page---------------------------------*/
+#formMain{
+  padding-top: 6%;
+  display: table;
+  margin: auto auto;
+
+}
+
+#signtoday{
+  font-family: Bangers;
+  text-align: center;
+}
+
+#signupButton{
+  display: flex;
+  margin-right: auto;
+  margin-left: auto;
+  justify-content: center;
+  font-family: Bangers;
 }
