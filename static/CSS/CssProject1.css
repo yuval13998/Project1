@@ -76,16 +76,39 @@
   margin: auto auto;
 
 }
-
 #signtoday{
   font-family: Bangers;
   text-align: center;
 }
-
 #signupButton{
   display: flex;
   margin-right: auto;
   margin-left: auto;
   justify-content: center;
   font-family: Bangers;
+}
+#alertPass{
+  color: red;
+}
+
+/*-------------------------------------HOME PAGE--------------------*/
+.homeBody{
+   background-image: url('/static/img/homepageBG.jpg');
+}
+.maindiv{
+  margin-top: 6%;
+  margin-left: auto;
+  background-color: #ffffff;
+  border: 1px solid #eaa86e;
+  opacity: 0.6;
+  margin-right: auto;
+  display: flex;
+  width: 600px;
+  text-align: center;
+}
+
+.titWelcome{
+  font-family: Bangers;
+  text-align: center;
+  padding-top: 10px;
 }

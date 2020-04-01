@@ -13,7 +13,15 @@
     <div id="headbg" class="row">
         <div id="logo"><img src="{{ url_for('static', filename='logo.png') }}" alt="" class="logoImg"></div>
         <div id="brand"></div>
-        <div  id="logout"><button type="button" class="btn btn-primary">LogOut</button></div>
+        <div  id="logout">
+          {% block logout %}
+          {% if session.get("user_id") is not none: %}
+          <form class="" action="{{url_for("signout")}}" method="post">
+              <button type="submit" class="btn btn-primary">LogOut</button>
+            </form>
+          {% endif %}
+        {% endblock %}
+        </div>
     </div>
          {% block body %}{% endblock %}
 
