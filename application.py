@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request, session
 from flask_session import Session
 from models import *
+from booksinfo import *
 from sqlalchemy import or_
 
 
@@ -79,8 +80,10 @@ def book(isbn):
     if Book.query.get(isbn) is not None:
         bookInfo = Book.query.get(isbn)
         reviews = bookInfo.reviews
+        avRate = bookInfo.getGoodreads()
         users = bookInfo.listofnames(reviews)
-        return  render_template("bookInfo.html",bookinfo=bookInfo, reviews=reviews, users=users,existrev=bookInfo.checkExistRev(session["user_id"]),existlike=bookInfo.checkfirstlike(session["user_id"]))
+        bookextra = BooksExtra(existrev=bookInfo.checkExistRev(session["user_id"]),existlike=bookInfo.checkfirstlike(session["user_id"]),likecount=len(bookInfo.likes), avRate=avRate, rate=bookInfo.getOurAvRate())
+        return  render_template("bookInfo.html",bookinfo=bookInfo,reviews=reviews,users=users, bookextra=bookextra)
     else:
         return  render_template("search.html")
 
@@ -97,14 +100,18 @@ def addreview(bookisbn):
             rate = 3
         book.add_Rev(user_id=session["user_id"],rate=int(rate),content=content)
         reviews = book.reviews
+        avRate = book.getGoodreads()
         users = book.listofnames(reviews)
-        return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users,existrev=True,existlike=book.checkfirstlike(session["user_id"]))
+        bookextra = BooksExtra(existrev=book.checkExistRev(session["user_id"]),existlike=book.checkfirstlike(session["user_id"]),likecount=len(book.likes), avRate=avRate, rate=book.getOurAvRate())
+        return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users, bookextra=bookextra)
     else:
         book = Book.query.get(bookisbn)
         if book.checkExistRev(session["user_id"]):
             reviews = book.reviews
+            avRate = book.getGoodreads()
             users = book.listofnames(reviews)
-            return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users, existrev=True,existlike=book.checkfirstlike(session["user_id"]))
+            bookextra = BooksExtra(existrev=book.checkExistRev(session["user_id"]),existlike=book.checkfirstlike(session["user_id"]),likecount=len(book.likes), avRate=avRate, rate=book.getOurAvRate())
+            return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users, bookextra=bookextra)
         else:
             return  render_template("addreview.html",bookisbn=bookisbn)
 
@@ -116,5 +123,7 @@ def Addnewlike(bookisbn):
         book = Book.query.get(bookisbn)
         book.addLike(session["user_id"])
         reviews = book.reviews
+        avRate = book.getGoodreads()
         users = book.listofnames(reviews)
-        return  render_template("bookInfo.html",bookinfo=book, reviews=reviews, users=users,existrev=book.checkExistRev(session["user_id"]),existlike=book.checkfirstlike(session["user_id"]) )
+        bookextra = BooksExtra(existrev=book.checkExistRev(session["user_id"]),existlike=book.checkfirstlike(session["user_id"]),likecount=len(book.likes), avRate=avRate, rate=book.getOurAvRate())
+        return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users, bookextra=bookextra)

@@ -13,20 +13,21 @@
   </div>
 </div>
  {% block Exist %}
- {% if existrev is not none and not existrev: %}
+ {% if bookextra.existrev is not none and not bookextra.existrev: %}
  <a href="{{url_for('addreview', bookisbn=bookinfo.isbn)}}"> <button type="button" style=" margin-left:10% ;" class="btn btn-secondary">+ Add Review</button></a>
  {% else: %}
  <button type="button" style=" margin-left:10% ;" class="btn btn-success" disabled>+ You reviewed</button>
  {% endif %}
- {% if existlike is not none and not existlike: %}
- <a href="{{url_for('Addnewlike', bookisbn=bookinfo.isbn)}}"> <button type="button" style=" margin-right:10%;margin-left:2%;" class="btn btn-info">+ Like</button></a>
+ {% if bookextra.existlike is not none and not bookextra.existlike: %}
+ <a href="{{url_for('Addnewlike', bookisbn=bookinfo.isbn)}}"> <button type="button" style=" margin-right:10%;margin-left:2%;" class="btn btn-info">+ Like {{bookextra.likecount}}</button></a>
  {% else: %}
-<button type="button" style=" margin-right:10%;margin-left:2% ;" class="btn btn-success" disabled>+ liked</button>
+<button type="button" style=" margin-right:10%;margin-left:2% ;" class="btn btn-success" disabled>+ liked {{bookextra.likecount}}</button>
  {% endif %}
  {% endblock %}
 <h5 style="text-align:center;">Reviews:</h5>
   <div style="text-align:center;margin-bottom:2%; margin-left: auto;width: 80%;margin-right: auto; overflow:scroll; height:180px;">
     <ul class="list-group list-group-flush">
+      <li class="list-group-item"><h6>RATED: M&YBooks avg ({{bookextra.rate}}), Goodreads avg ({{bookextra.avRate}}), TOATAL: ({{bookextra.totalrate}})</li>
       {% for i in range(reviews|length): %}
       <li class="list-group-item"><h6>Review by {{users[i]}}, rated: {{reviews[i].rate}}</h6> {{reviews[i].content}}</li>
       {% else: %}

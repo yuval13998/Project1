@@ -7,17 +7,23 @@
 {% endblock %}
 
 {% block body %}
-<form action="{{url_for('search')}}" method="post">
-  <div class="form-row align-items-center">
+<form action="{{url_for('search')}}" style="display: table; margin: auto;" method="post">
+  <div class="">
+    <h2 style="display: table; margin: auto;font-family: Bangers;">Search M&YBOOKS</h2>
+  </div>
+  <div class="form-row align-items-center" style="display: table; margin:auto;">
     <div class="col-auto my-1">
-      <input type="text" class="form-control" id="" name="content" placeholder="Content">
+      <input type="text" class="form-control" style="margin:auto;" id="" name="content" placeholder="Content">
     </div>
     <div class="col-auto my-1">
-      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="submit" style="display:table;margin:auto;" class="btn btn-primary">Search</button>
     </div>
-    <div class="matches">
-        {% if results is not none: %}
-          <h1>{{content.title()}}</h1>
+    {% if results is not none: %}
+    <div class="">
+      <h4 style="text-align: center;font-family: Bangers;padding-top: 3%;">{{content.title()}}</h4>
+    </div>
+    <div class="matches" style="display: table; margin: auto;font-family: Bangers; width:160%;">
+
       <ul>
         {% for result in results: %}
         <li> <a href="/book/{{result.isbn}}"> {{result.title.title()}} \ {{result.author.title()}}, {{result.year}}</a></li>

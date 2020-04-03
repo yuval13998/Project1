@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask
+from flask import Flask,request
 from flask_sqlalchemy import SQLAlchemy
+import requests
 
 db = SQLAlchemy()
 
@@ -53,6 +54,27 @@ class Book(db.Model):
             if lik.user_id == user_id:
                 existlike = True
         return existlike
+
+    def getGoodreads(self):
+        res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "7c49zzVsGsbIkJX91bNmIw", "isbns": self.isbn})
+        if res.status_code != 200:
+            return "0"
+        data = res.json()
+        avRate = data["books"]
+        for i in avRate:
+            return i['average_rating']
+
+    def getOurAvRate(self):
+        count = 0
+        sum = 0
+        for review in self.reviews:
+            count+=1
+            sum = sum + review.rate
+        if count == 0:
+            return 0
+        return sum/count
+
+
 
 class Review(db.Model):
     __tablename__ = "reviews"
