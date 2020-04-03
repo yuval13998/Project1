@@ -63,44 +63,58 @@ def login():
 
 @app.route("/search",methods=["GET","POST"])
 def search():
-      if request.method=="GET":
-          if session.get("user_id") is None:
-              return  render_template("homepage.html")
-          else:
-              return  render_template("search.html", content="")
-      elif request.method=="POST":
+      if session.get("user_id") is None:
+           return  render_template("homepage.html")
+      elif request.method=="GET":
+        return  render_template("search.html", content="")
+      else:
           formcontent = request.form.get("content").lower()
           results= Book.query.filter(or_(Book.isbn.like(f"%{formcontent}%"),Book.title.like(f"%{formcontent}%"),Book.author.like(f"%{formcontent}%"),Book.year.like(f"%{formcontent}%"))).limit(10).all()
           return  render_template("search.html",results=results, content=f'Results for "{formcontent}":')
-      else:
-          return  render_template("homepage.html")
 
 @app.route("/book/<string:isbn>")
 def book(isbn):
+    if session.get("user_id") is None:
+          return  render_template("homepage.html")
     if Book.query.get(isbn) is not None:
         bookInfo = Book.query.get(isbn)
         reviews = bookInfo.reviews
-        users = []
-        for review in reviews:
-             userName = User.query.get(review.user_id)
-             users.append(userName.username)
-        return  render_template("bookInfo.html",bookinfo=bookInfo, reviews=reviews, users=users)
+        users = bookInfo.listofnames(reviews)
+        return  render_template("bookInfo.html",bookinfo=bookInfo, reviews=reviews, users=users,existrev=bookInfo.checkExistRev(session["user_id"]),existlike=bookInfo.checkfirstlike(session["user_id"]))
     else:
         return  render_template("search.html")
 
 
 @app.route("/addreview/<string:bookisbn>",methods=["GET","POST"])
 def addreview(bookisbn):
-    if request.method=="POST":
+    if session.get("user_id") is None:
+        return  render_template("homepage.html")
+    elif request.method=="POST":
         book = Book.query.get(bookisbn)
-        rate = int(request.form.get("ratereview"))
+        rate = request.form.get("ratereview")
         content = request.form.get("reviewcontent")
-        book.add_Rev(user_id=session["user_id"],rate=rate,content=content)
+        if rate == None:
+            rate = 3
+        book.add_Rev(user_id=session["user_id"],rate=int(rate),content=content)
         reviews = book.reviews
-        users = []
-        for review in reviews:
-            userName = User.query.get(review.user_id)
-            users.append(userName.username)
-        return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users)
+        users = book.listofnames(reviews)
+        return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users,existrev=True,existlike=book.checkfirstlike(session["user_id"]))
     else:
-        return  render_template("addreview.html",bookisbn=bookisbn)
+        book = Book.query.get(bookisbn)
+        if book.checkExistRev(session["user_id"]):
+            reviews = book.reviews
+            users = book.listofnames(reviews)
+            return  render_template("bookInfo.html",bookinfo=book,reviews=reviews,users=users, existrev=True,existlike=book.checkfirstlike(session["user_id"]))
+        else:
+            return  render_template("addreview.html",bookisbn=bookisbn)
+
+
+@app.route("/Addnewlike/<string:bookisbn>",methods=["GET"])
+def Addnewlike(bookisbn):
+        if session.get("user_id") is None:
+            return  render_template("homepage.html")
+        book = Book.query.get(bookisbn)
+        book.addLike(session["user_id"])
+        reviews = book.reviews
+        users = book.listofnames(reviews)
+        return  render_template("bookInfo.html",bookinfo=book, reviews=reviews, users=users,existrev=book.checkExistRev(session["user_id"]),existlike=book.checkfirstlike(session["user_id"]) )

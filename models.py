@@ -33,6 +33,26 @@ class Book(db.Model):
         db.session.add(rev)
         db.session.commit()
 
+    def checkExistRev(self, user_id):
+        exist = False
+        for rev in self.reviews:
+            if rev.user_id == user_id:
+                exist = True
+        return exist
+
+    def listofnames(self, reviews):
+        users = []
+        for review in reviews:
+            userName = User.query.get(review.user_id)
+            users.append(userName.username)
+        return users
+
+    def checkfirstlike(self, user_id):
+        existlike = False
+        for lik in self.likes:
+            if lik.user_id == user_id:
+                existlike = True
+        return existlike
 
 class Review(db.Model):
     __tablename__ = "reviews"
