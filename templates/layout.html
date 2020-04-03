@@ -11,7 +11,7 @@
   </head>
   <body>
     <div id="headbg" class="row">
-        <div id="logo"><img src="{{ url_for('static', filename='logo.png') }}" alt="" class="logoImg"></div>
+        <div id="logo"> <a href="/"> <img src="{{ url_for('static', filename='logo.png') }}" alt="" class="logoImg"></a></div>
         <div id="brand"></div>
         <div  id="logout">
           {% block logout %}

@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search M&YBooks
+{% endblock %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<form action="{{url_for('search')}}" method="post">
+  <div class="form-row align-items-center">
+    <div class="col-auto my-1">
+      <input type="text" class="form-control" id="" name="content" placeholder="Content">
+    </div>
+    <div class="col-auto my-1">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    <div class="matches">
+        {% if results is not none: %}
+          <h1>{{content.title()}}</h1>
+      <ul>
+        {% for result in results: %}
+        <li> <a href="/book/{{result.isbn}}"> {{result.title.title()}} \ {{result.author.title()}}, {{result.year}}</a></li>
+        {%endfor%}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</form>
+{% endblock %}

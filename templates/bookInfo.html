@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Book Information, M&YBooks experts.
+{% endblock %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="card" style="text-align:center;margin-bottom:2%;margin-top:2%; margin-left: auto;width: 80%;margin-right: auto;">
+  <div class="card-header">
+    <h4>{{bookinfo.title.title()}}</h4><h6>{{bookinfo.author.title()}}, {{bookinfo.year}}</h6>
+  </div>
+
+</div>
+
+<a href="{{url_for('addreview', bookisbn=bookinfo.isbn)}}"> <button type="button" style=" margin-left:10% ;" class="btn btn-secondary">+ Add Review</button></a>
+<a href="#"> <button type="button" style=" margin-right:10%;margin-left:2%;" class="btn btn-info">+ Like</button></a>
+<h5 style="text-align:center;">Reviews:</h5>
+  <div style="text-align:center;margin-bottom:2%; margin-left: auto;width: 80%;margin-right: auto; overflow:scroll; height:180px;">
+    <ul class="list-group list-group-flush">
+      {% for i in range(reviews|length): %}
+      <li class="list-group-item"><h6>Review by {{users[i]}}, rated: {{reviews[i].rate}}</h6> {{reviews[i].content}}</li>
+      {% else: %}
+      <li class="list-group-item">sorry. no reviews yet. add one now!</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+
+
+{% endblock %}

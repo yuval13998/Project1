@@ -19,7 +19,7 @@ class Book(db.Model):
     isbn = db.Column(db.String, primary_key=True)
     title = db.Column(db.String, nullable=False)
     author = db.Column(db.String, nullable=False)
-    year = db.Column(db.Integer, nullable=False)
+    year = db.Column(db.String, nullable=False)
     reviews = db.relationship("Review", backref="Book", lazy=True)
     likes = db.relationship("Like", backref="Book", lazy=True)
 
@@ -28,7 +28,7 @@ class Book(db.Model):
         db.session.add(like)
         db.session.commit()
 
-    def addRev(self, user_id, rate, content):
+    def add_Rev(self, user_id, rate, content):
         rev = Review(content=content,rate=rate,user_id=user_id,book_isbn=self.isbn)
         db.session.add(rev)
         db.session.commit()

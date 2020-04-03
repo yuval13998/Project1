@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    M&YBooks registeration 
+    Log In M&YBooks
 {% endblock %}
 {% block head %}
 {% endblock %}
 
 {% block body %}
-<div id="formMain" class="">
-  <form class="" action="{{url_for('newUser')}}" method="post">
+<div id="loginform" class="">
+  <form class="" action="{{url_for('login')}}" method="post">
     <div  class="form-group">
-      <h2 id="signtoday"></h2>
+      <h2 id="logintitle"></h2>
     </div>
 
     <div class="form-group">
@@ -21,10 +21,12 @@
     <div class="form-group">
       <label id="passLable">Password:</label>
       <input type="password" class="form-control" name="password">
-      <small class="form-text" id="alertPass" style="visibility:{{msg}}">Password must contain at least 6 characters!</small>
+      {% if '{{msg}}' is not none: %}
+        <small class="form-text" id="alertwrongPass">{{msg}}</small>
+      {% endif %}
     </div>
 
-      <input type="submit" id="signupButton" class="btn btn-primary btn-lg" value="Sign Up">
+      <input type="submit" id="loginBottun" class="btn btn-primary btn-lg" value="Log In">
   </form>
 </div>
 
