@@ -14,12 +14,12 @@
    <div class="bottuns" style="display: table; margin-left: auto; margin-right: auto; margin-top:2%;">
     {% block HomePage %}
      {% if session.get("user_id") is not none: %}
-        <a href="/search"> <button type="submit" class="btn btn-warning btn-lg">Search</button></a>
+        <a href="/search"> <button type="submit" class="btn btn-warning btn-lg"style="font-family: Bangers;">Search</button></a>
      {% endif %}
 
    {% if session.get("user_id") is none: %}
-   <a href="register"><input type="button" id="tosignup" class="btn btn-primary btn-lg" value="Sign Up"></a>
-   <a href="login"><input type="button" id="tologin" class="btn btn-primary btn-lg" value="Log In"></a>
+   <a href="register"><input type="button" id="tosignup" class="btn btn-primary btn-lg" value="Sign Up"style="font-family: Bangers;"></a>
+   <a href="login"><input type="button" id="tologin" class="btn btn-primary btn-lg" value="Log In"style="font-family: Bangers;"></a>
    {% endif %}
  {% endblock %}
 
