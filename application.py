@@ -41,8 +41,10 @@ def signout():
      session.clear()
      return  render_template("homepage.html")
 
-@app.route("/login",methods=["POST"])
+@app.route("/login",methods=["POST", "GET"])
 def login():
+    if request.method=="GET":
+        return  render_template("login.html")
     userPass = request.form.get("password")
     userName = request.form.get("username")
     exist = User.query.filter_by(username = userName).first()
@@ -58,9 +60,6 @@ def login():
         else:
             return  render_template("login.html", msg="password must contain at least 6 characterss!")
 
-@app.route("/loginGet")
-def loginGet():
-    return  render_template("login.html")
 
 @app.route("/search",methods=["GET","POST"])
 def search():
